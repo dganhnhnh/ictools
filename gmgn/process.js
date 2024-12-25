@@ -70,9 +70,9 @@ const processFile = async () => {
                     });
 
                     if (!summary[row.wallet]) {
-                        summary[row.wallet] = [];
+                        summary[row.wallet] = new Set();
                     }
-                    summary[row.wallet].push(symbol);
+                    summary[row.wallet].add(symbol);
                 }
             }
         })
@@ -82,7 +82,7 @@ const processFile = async () => {
 
             const summaryResults = Object.keys(summary).map(wallet => ({
                 wallet: wallet,
-                concatened_inside: `[${summary[wallet].join(' ')}]`
+                concatened_inside: `[${Array.from(summary[wallet]).join(' ')}]`
             }));
 
             await summaryWriter.writeRecords(summaryResults);
